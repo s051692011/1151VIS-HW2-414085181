@@ -5,7 +5,13 @@ https://github.com/s051692011/1151VIS-HW2-414085181
 使用Eva style主題 並將Nerv防災特務機關 APP 中的主要視覺資料呈現與功能在頁面上使用監控儀表板的方式再現
 
 - APP功能參考：
-- LIVE數據頁面截圖：
+
+
+- 實作頁面截圖：
+![圖片說明](https://github.com/s051692011/1151VIS-HW2-414085181/blob/main/screenshots/dashboard-demo.png)
+![圖片說明](https://github.com/s051692011/1151VIS-HW2-414085181/blob/main/screenshots/dashboard-interaction.png)
+![圖片說明](https://github.com/s051692011/1151VIS-HW2-414085181/blob/main/screenshots/dashboard-mobile.png)
+
 
 製作流程
 1. 資料選題：採用 P2P地震情報公開 API，可取得日本地震規模、震度、時間、經緯度等資料。
