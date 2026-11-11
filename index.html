@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="theme-color" content="#080e12">
+<title>EVA-STYLE | SEISMIC COMMAND / 地震動態視覺化</title>
+<link rel="stylesheet" href="css/eva-theme.css">
+<script defer src="vendor/d3.v3.min.js"></script>
+<script defer src="assets/japan-country.js"></script>
+<script defer src="js/demo-data.js"></script>
+<script defer src="js/earthquake-api.js"></script>
+<script defer src="js/app.js"></script>
+</head>
+<body>
+<div class="edge-left"></div><div class="edge-right"></div>
+<div class="app-shell">
+<header class="topbar">
+  <div class="brand"><div class="brand-mark"><span>S</span><span>★</span><span>C</span></div><div><div class="eyebrow">SEISMIC EARTHQUAKE INFORMATION SYSTEM <span class="tiny-line"></span> VER 0.1.0</div><div class="brand-name">SEISMIC <b>COMMAND</b> <span class="brand-sub">/ 地震動態指揮平台</span></div></div></div>
+  <div class="header-right"><div class="clock-wrap"><div class="micro">JST / TOKYO STANDARD TIME</div><div id="clock">--:--:--</div><div id="dateJst" class="micro faded">----.--.--</div></div><div class="system-badge"><span id="modeLamp" class="lamp"></span><span id="modeText">DEMO / 演示資料</span><small id="connectionText">LOCAL SYSTEM ACTIVE</small></div></div>
+</header>
+<div class="alert-banner" id="alertBanner"><div class="hazard-block">▰▰▰</div><div class="alert-icon">◈</div><div><div id="alertTitle">SEISMIC SURVEILLANCE — NORMAL STATUS</div><div id="alertText">此為教學視覺化系統，並非官方防災警報設備。</div></div><div class="banner-right" id="alertRight">SYSTEM ONLINE <span class="fine">// 001</span></div></div>
+<main class="dashboard-grid">
+ <aside class="left-panel">
+  <section class="module module-accent"><div class="section-head"><span><i class="sq"></i> NETWORK CONTROL</span><span class="section-id">01 / CONTROL</span></div>
+   <div class="control-label">DATA LINK / 資料來源</div><div class="segmented"><button id="demoBtn" class="mode-btn active" type="button">● DEMO</button><button id="liveBtn" class="mode-btn" type="button">◉ LIVE API</button></div>
+   <div class="status-line"><span class="status-dot"></span><span id="sourceDesc">內建模擬資料 · 無網路亦可運行</span></div>
+   <button id="refreshBtn" class="outline-btn" type="button">↻ <span>重新取得即時資料</span><span>↗</span></button>
+   <div class="control-label space">MAGNITUDE FILTER / 震級篩選 <strong id="minMagLabel">M 0.0+</strong></div>
+   <input id="magFilter" type="range" min="0" max="6" step="1" value="0" aria-label="最低地震規模"><div class="range-labels"><span>M0</span><span>M2</span><span>M4</span><span>M6</span></div>
+   <div class="control-label space">SELECTED TIME WINDOW</div><div class="timechips"><button class="timechip active" data-days="all">全部事件</button><button class="timechip" data-days="1">24 H</button><button class="timechip" data-days="3">72 H</button></div>
+  </section>
+  <section class="module numbers"><div class="section-head"><span><i class="sq"></i> SITUATION ANALYSIS</span><span class="section-id">02 / DATA</span></div><div class="big-stat"><div><div class="micro">DETECTED EVENTS</div><div class="big-number" id="eventCount">00</div></div><span class="mini-unit">EVENTS <br> RECORDED</span></div><div class="stat-cells"><div><div class="micro">MAX MAGNITUDE</div><div class="stat-number" id="maxMag">M 0.0</div></div><div><div class="micro">MAX INTENSITY</div><div class="stat-number orange" id="maxIntensity">--</div></div></div></section>
+  <section class="module chart-section"><div class="section-head"><span><i class="sq"></i> MAGNITUDE DISTRIBUTION</span><span class="section-id">03 / GRAPH</span></div><div id="magnitudeChart" class="bar-chart"></div><div class="chart-legend"><span><span class="legend-swatch"></span>地震規模區間</span><span>DATA / D3.js</span></div></section>
+  <section class="micro-notice"><span class="warning-icon">!</span><p>學術作業示範系統。資料可能延遲或遺漏，請勿用於人身安全或即時防災決策。</p></section>
+ </aside>
+ <section class="map-panel">
+  <div class="map-frame"><div class="map-top"><div><div class="micro accent">GEOSPATIAL INTELLIGENCE / JAPAN</div><div class="map-title">日本列島 <span>EARTHQUAKE MAP</span></div></div><div class="map-controls"><button id="zoomIn" aria-label="放大地圖" title="放大地圖">＋</button><button id="zoomOut" aria-label="縮小地圖" title="縮小地圖">－</button><button id="resetZoom" aria-label="重設地圖" title="重設地圖">⌖</button></div></div>
+  <div class="map-area" id="mapArea"><div class="map-grid"></div><svg id="japanMap" viewBox="0 0 900 730" role="img" aria-label="D3 日本地圖：震央點與動態同心圓"></svg><div class="map-compass">N <span>↑</span></div><div class="map-coordinate">PROJECTION / MERCATOR<br><span>JAPAN TERRITORY · 20°–48° N</span></div><div class="map-radar"><span></span><span></span><span></span></div><div class="map-crosshair x"></div><div class="map-crosshair y"></div><div id="mapTooltip" class="map-tooltip" hidden></div></div>
+  <div class="map-bottom"><span class="signal"><i></i> <span id="mapSignal">SIMULATED EARTHQUAKE EVENTS</span></span><span class="map-legend"><i class="m-dot"></i>M &lt; 4 <i class="m-dot medium"></i>M4–5.9 <i class="m-dot severe"></i>M ≥ 6</span><span class="map-disclaimer">COUNTRY OUTLINE · NOT PREFECTURAL INTENSITY MAP</span></div></div>
+ </section>
+ <aside class="right-panel">
+  <section class="module event-module"><div class="section-head"><span><i class="sq"></i> SEISMIC EVENT FEED</span><span class="section-id">04 / EVENTS</span></div><div class="feed-summary"><span>RECENT ACTIVITY</span><span id="feedCount">-- EVENTS</span></div><div id="eventList" class="event-list" aria-label="地震事件清單"></div></section>
+  <section class="module selected-module"><div class="section-head"><span><i class="sq"></i> EVENT DETAILS</span><span class="section-id">05 / TARGET</span></div><div class="micro muted">SELECTED SEISMIC EVENT / 震央情報</div><div class="target-name" id="selectedPlace">--- </div><div class="target-grid"><div><div class="micro">MAGNITUDE</div><b id="selectedMag">--</b></div><div><div class="micro">MAX INTENSITY</div><b id="selectedIntensity">--</b></div><div><div class="micro">DEPTH</div><b id="selectedDepth">--</b></div><div><div class="micro">OCCURRENCE</div><b id="selectedTime" class="small-value">--</b></div></div><div class="target-footer" id="selectedCoord">LAT -- / LON --</div><div id="prefectures" class="prefectures"></div></section>
+ </aside>
+</main>
+<footer class="timeline-panel"><div class="timeline-top"><div><span class="orange-label">06</span> <b>TEMPORAL EVENT REPLAY</b><span class="timeline-sub">/ 地震事件時間軸與動態播放</span></div><div class="play-actions"><button id="playBtn" title="播放或暫停">▶ PLAY</button><button id="stepBtn" title="下一筆">NEXT ▷</button><span class="speed-wrap">SPEED <select id="speedSelect" aria-label="播放速度"><option value="1500">1×</option><option value="750">2×</option><option value="350">4×</option></select></span></div></div><div class="timeline-row"><span class="timeline-label">EARLIEST</span><div id="timelineChart" class="timeline-chart"></div><span class="timeline-label">LATEST</span></div><div class="slider-row"><span id="positionLabel">EVENT 01 / 01</span><input id="eventSlider" type="range" min="0" max="1" value="0" aria-label="事件時間軸"><span id="timelineDate">--</span></div></footer>
+<footer class="bottomline"><span>PROJECT : 1151VIS-HW2 / DYNAMIC VISUALIZATION USING D3.JS</span><span>DATA : <a href="https://www.p2pquake.net/" target="_blank" rel="noopener noreferrer">P2P地震情報</a> / <a href="https://www.jma.go.jp/jma/index.html" target="_blank" rel="noopener noreferrer">気象庁</a> · MAP OUTLINE : countryinfo (MIT)</span><span>ORIGINAL EDUCATIONAL UI · NO NERV AFFILIATION</span></footer>
+</div>
+<div id="toast" role="status" class="toast" hidden></div>
+</body></html>
