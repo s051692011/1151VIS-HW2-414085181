@@ -24,23 +24,26 @@ https://github.com/s051692011/1151VIS-HW2-414085181
 - 用底部 `PLAY`、`NEXT`、`SPEED` 和時間軸滑桿播放事件時間序列。
 
 架構:
-- P2P JSON API (history / jma/quake)  ────┐
-- P2P WebSocket (/ws)                 ────┤
--                                         ▼
--                          js/earthquake-api.js
--                          解析 551 地震事件與 556 EEW
--                          驗證座標、震級、日期、事件ID
--                                         │
--               DEMO_QUAKES（離線） ────────┤
--                                         ▼
--                                  js/app.js
--                   filters / selected / replay / de-dupe
--                            │           │            │
--                            ▼           ▼            ▼
--                        D3.js map   D3.js bar   D3.js timeline
--                            └───────── DOM panels ──────┘
--                                         ▼
--                           index.html + eva-theme.css
+```text
+P2P JSON API (history / jma/quake)  ────┐
+P2P WebSocket (/ws)                 ────┤
+                                        ▼
+                         js/earthquake-api.js
+                         解析 551 地震事件與 556 EEW
+                         驗證座標、震級、日期、事件ID
+                                        │
+              DEMO_QUAKES（離線） ────────┤
+                                        ▼
+                                 js/app.js
+                  filters / selected / replay / de-dupe
+                           │           │            │
+                           ▼           ▼            ▼
+                       D3.js map   D3.js bar   D3.js timeline
+                           └───────── DOM panels ──────┘
+                                        ▼
+                          index.html + eva-theme.css
+```
+
 
 資料來源與制限:
 - P2P地震情報：<https://www.p2pquake.net/develop/json_api_v2/>
