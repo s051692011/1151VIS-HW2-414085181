@@ -17,30 +17,30 @@ https://github.com/s051692011/1151VIS-HW2-414085181
 
 
 部屬:
-雙擊 `start.bat`，在瀏覽器開啟 `http://127.0.0.1:8000/`。
+- 雙擊 `start.bat`，在瀏覽器開啟 `http://127.0.0.1:8000/`。
 - 點 `DEMO` 以重播模擬地震資料；若有網路可點 `LIVE API` 嘗試接收真實資料。
 - 拖曳日本地圖或點 + / − 放大縮小，點選地震事件查看細節。
 - 調整 `MAGNITUDE FILTER`，觀察地震位置及統計圖同步變化。
 - 用底部 `PLAY`、`NEXT`、`SPEED` 和時間軸滑桿播放事件時間序列。
 
 架構:
-P2P JSON API (history / jma/quake)  ────┐
-P2P WebSocket (/ws)                 ────┤
-                                        ▼
-                         js/earthquake-api.js
-                         解析 551 地震事件與 556 EEW
-                         驗證座標、震級、日期、事件ID
-                                        │
-              DEMO_QUAKES（離線） ────────┤
-                                        ▼
-                                 js/app.js
-                  filters / selected / replay / de-dupe
-                           │           │            │
-                           ▼           ▼            ▼
-                       D3.js map   D3.js bar   D3.js timeline
-                           └───────── DOM panels ──────┘
-                                        ▼
-                          index.html + eva-theme.css
+- P2P JSON API (history / jma/quake)  ────┐
+- P2P WebSocket (/ws)                 ────┤
+-                                         ▼
+-                          js/earthquake-api.js
+-                          解析 551 地震事件與 556 EEW
+-                          驗證座標、震級、日期、事件ID
+-                                         │
+-               DEMO_QUAKES（離線） ────────┤
+-                                         ▼
+-                                  js/app.js
+-                   filters / selected / replay / de-dupe
+-                            │           │            │
+-                            ▼           ▼            ▼
+-                        D3.js map   D3.js bar   D3.js timeline
+-                            └───────── DOM panels ──────┘
+-                                         ▼
+-                           index.html + eva-theme.css
 
 資料來源與制限:
 - P2P地震情報：<https://www.p2pquake.net/develop/json_api_v2/>
