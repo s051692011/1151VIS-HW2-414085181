@@ -1,8 +1,8 @@
-https://github.com/s051692011/1151VIS-HW2-414085181
-414085181 HW2: Dynamic visualization using D3.js
+- https://github.com/s051692011/1151VIS-HW2-414085181
+- 414085181 HW2: Dynamic visualization using D3.js
 
-參考 : Nerv防災特務機關 APP
-使用Eva style主題 並將Nerv防災特務機關 APP 中的主要視覺資料呈現與功能在頁面上使用監控儀表板的方式再現
+- 參考 : Nerv防災特務機關 APP
+- 使用Eva style主題 並將Nerv防災特務機關 APP 中的主要視覺資料呈現與功能在頁面上使用監控儀表板的方式再現
 
 - APP功能參考：
 ![圖片說明](https://github.com/s051692011/1151VIS-HW2-414085181/blob/main/screenshots/resource.jpg)
